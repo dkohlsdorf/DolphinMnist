@@ -121,7 +121,6 @@ public class SpectrogramController implements KeyListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println(e.getX() + " " + spectrogramView.getSize().width + " " + spectrogram.getTime());
         position = (e.getX() * spectrogram.getTime() / spectrogramView.getSize().width);
         spectrogramView.setPosition(position);
         spectrogramView.repaint();

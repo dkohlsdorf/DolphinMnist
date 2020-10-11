@@ -37,7 +37,6 @@ public class AudioStream {
         int until = currentOffset + windowSize;
         if (until > audio.length) until = audio.length;
         double[] window = Arrays.copyOfRange(audio, currentOffset, until);
-        System.out.println(String.format("Current: %s,%d,%d,%d, %d", files[currentFile], currentOffset, until, window.length, audio.length));
         currentOffset += windowSize;
         return window;
     }
