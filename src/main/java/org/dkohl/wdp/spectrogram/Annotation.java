@@ -34,19 +34,6 @@ public class Annotation {
         return counts;
     }
 
-    public static void write(ArrayList<Annotation> annotations, File file) throws IOException {
-        FileWriter writer = new FileWriter(file);
-        writer.write("filename,start,stop,annotation\n");
-        for(Annotation annotation:annotations) {
-            writer.write(String.format("%s,%d,%d,%s\n",
-                    annotation.getFile(),
-                    annotation.getStart(),
-                    annotation.getStop(),
-                    annotation.getAnnotation().name()));
-        }
-        writer.close();
-    }
-
     @Override
     public String toString() {
         return "Annotation{" +

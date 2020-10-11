@@ -1,6 +1,6 @@
 package org.dkohl.wdp.spectrogram;
 
-import org.dkohl.wdp.io.AudioReader;
+import org.dkohl.wdp.io.Audio;
 
 import java.util.Arrays;
 
@@ -32,7 +32,7 @@ public class AudioStream {
             currentOffset = 0;
             currentFile++;
             if(done()) return null;
-            audio = AudioReader.audioData(files[currentFile]);
+            audio = Audio.read(files[currentFile]);
         }
         int until = currentOffset + windowSize;
         if (until > audio.length) until = audio.length;

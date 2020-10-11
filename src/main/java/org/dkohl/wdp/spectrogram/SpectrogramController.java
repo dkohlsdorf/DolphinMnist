@@ -1,11 +1,14 @@
 package org.dkohl.wdp.spectrogram;
 
+import org.dkohl.wdp.io.Audio;
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SpectrogramController implements KeyListener {
 
@@ -35,7 +38,6 @@ public class SpectrogramController implements KeyListener {
     }
 
     private void addAnnotation(Annotation a) {
-        System.out.println(a);
         annotations.add(a);
     }
 
@@ -45,13 +47,18 @@ public class SpectrogramController implements KeyListener {
         spectrogramView.setPosition(position);
     }
 
-    private void save() throws IOException {
+    private void save() throws Exception {
         JFrame f = new JFrame();
         JFileChooser fc = new JFileChooser();
+        Date date = new Date();
+        String filename = date.toString().replaceAll("[^a-zA-Z0-9:-]+", "_");
+        fc.setSelectedFile(new File(String.format("~/%s.wav", filename)));
         int returnVal = fc.showSaveDialog(f);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            Annotation.write(annotations, file);
+            File file   = fc.getSelectedFile();
+            String pathWav = file.getAbsolutePath();
+            String pathCsv = pathWav.replace("wav", "csv");
+            Audio.write(pathWav, pathCsv, annotations);
         }
     }
 
@@ -105,7 +112,7 @@ public class SpectrogramController implements KeyListener {
         try {
             handle(event);
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
