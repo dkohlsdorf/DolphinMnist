@@ -5,12 +5,14 @@ import org.dkohl.wdp.io.Audio;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class SpectrogramController implements KeyListener {
+public class SpectrogramController implements KeyListener, MouseListener {
 
     private ArrayList<Annotation> annotations;
 
@@ -39,12 +41,6 @@ public class SpectrogramController implements KeyListener {
 
     private void addAnnotation(Annotation a) {
         annotations.add(a);
-    }
-
-    private void left() {
-        if(position > 0) position -= speed;
-        spectrogramView.repaint();
-        spectrogramView.setPosition(position);
     }
 
     private void save() throws Exception {
@@ -82,10 +78,17 @@ public class SpectrogramController implements KeyListener {
             seek();
         } else {
             position += speed;
-            spectrogramView.repaint();
             spectrogramView.setPosition(position);
+            spectrogramView.repaint();
         }
     }
+
+    private void left() {
+        if(position > 0) position -= speed;
+        spectrogramView.setPosition(position);
+        spectrogramView.repaint();
+    }
+
 
     private void handle(KeyEvent e) throws Exception {
         switch (e.getExtendedKeyCode()) {
@@ -117,9 +120,28 @@ public class SpectrogramController implements KeyListener {
     }
 
     @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println(e.getX() + " " + spectrogramView.getSize().width + " " + spectrogram.getTime());
+        position = (e.getX() * spectrogram.getTime() / spectrogramView.getSize().width);
+        spectrogramView.setPosition(position);
+        spectrogramView.repaint();
+    }
+
+    @Override
     public void keyPressed(KeyEvent event) { }
 
     @Override
     public void keyReleased(KeyEvent event) { }
 
+    @Override
+    public void mousePressed(MouseEvent e) { }
+
+    @Override
+    public void mouseReleased(MouseEvent e) { }
+
+    @Override
+    public void mouseEntered(MouseEvent e) { }
+
+    @Override
+    public void mouseExited(MouseEvent e) { }
 }

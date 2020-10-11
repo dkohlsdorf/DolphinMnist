@@ -42,6 +42,7 @@ public class AudioMNIST {
         specCmp.setPreferredSize(new Dimension(500, 500));
 
         SpectrogramController controller = new SpectrogramController(s, spec, params, specCmp, audioCmp, info, prop.getMnistWin(), prop.getMnistStep(), annotations);
+        specCmp.addMouseListener(controller);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
