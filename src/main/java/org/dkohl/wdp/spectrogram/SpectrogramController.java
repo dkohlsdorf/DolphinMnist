@@ -43,19 +43,29 @@ public class SpectrogramController implements KeyListener, MouseListener {
         annotations.add(a);
     }
 
-    private void save() throws Exception {
-        JFrame f = new JFrame();
-        JFileChooser fc = new JFileChooser();
-        Date date = new Date();
-        String filename = date.toString().replaceAll("[^a-zA-Z0-9:-]+", "_");
-        fc.setSelectedFile(new File(String.format("~/%s.wav", filename)));
-        int returnVal = fc.showSaveDialog(f);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file   = fc.getSelectedFile();
-            String pathWav = file.getAbsolutePath();
-            String pathCsv = pathWav.replace("wav", "csv");
-            Audio.write(pathWav, pathCsv, annotations);
-        }
+    private void save() {
+        Thread th = new Thread() {
+            @Override
+            public void run() {
+                JFrame f = new JFrame();
+                JFileChooser fc = new JFileChooser();
+                Date date = new Date();
+                String filename = date.toString().replaceAll("[^a-zA-Z0-9:-]+", "_");
+                fc.setSelectedFile(new File(String.format("~/%s.wav", filename)));
+                int returnVal = fc.showSaveDialog(f);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file   = fc.getSelectedFile();
+                    String pathWav = file.getAbsolutePath();
+                    String pathCsv = pathWav.replace("wav", "csv");
+                    try {
+                        Audio.write(pathWav, pathCsv, annotations);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        th.start();
     }
 
     private void seek() throws Exception {
