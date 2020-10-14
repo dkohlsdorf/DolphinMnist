@@ -12,8 +12,3 @@ At the bottom you can see the raw audio.
 The output of the program is an audio file with all the audio snippets:
 
 <img src="images/spec_export.png"/>
-
-As well as an annotation csv file:
-
-<img src="images/csv_export.png"/>
-
