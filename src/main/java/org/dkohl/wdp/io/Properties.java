@@ -25,7 +25,7 @@ public class Properties {
         int fftWin    = 512;
         int fftStep   = 128;
         int buffer    = 10 * 44100;
-        int mnistWin  = 44100 / 16;
+        int mnistWin  = 44100 / 8;
         int mnistStep = 44100 / 32;
         return new Properties(fftWin, fftStep, buffer, mnistWin, mnistStep);
     }
