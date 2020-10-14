@@ -7,6 +7,8 @@ public class Properties {
     private int buffer;
     private int mnistWin;
     private int mnistStep;
+    private int mnistWinDFT;
+    private int mnistStepDFT;
 
     public Properties(int fftWin, int fftStep, int buffer, int mnistWin, int mnistStep) {
         this.fftWin = fftWin;
@@ -14,6 +16,9 @@ public class Properties {
         this.buffer = buffer;
         this.mnistWin = mnistWin;
         this.mnistStep = mnistStep;
+        this.mnistWinDFT = mnistWin / fftStep;
+        this.mnistStepDFT = mnistStep / fftStep;
+
     }
 
     public static Properties defaultProperties() {
@@ -44,4 +49,9 @@ public class Properties {
     public int getMnistStep() {
         return mnistStep;
     }
+
+    public int getMnistStepDFT() { return mnistStepDFT; }
+
+    public int getMnistWinDFT() { return mnistWinDFT; }
+
 }

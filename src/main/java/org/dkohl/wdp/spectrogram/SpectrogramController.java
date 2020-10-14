@@ -54,18 +54,18 @@ public class SpectrogramController implements KeyListener, MouseListener {
                 fc.setSelectedFile(new File(String.format("~/%s.wav", filename)));
                 int returnVal = fc.showSaveDialog(f);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file   = fc.getSelectedFile();
+                    File file = fc.getSelectedFile();
                     String pathWav = file.getAbsolutePath();
                     String pathCsv = pathWav.replace("wav", "csv");
                     try {
-                        Audio.write(pathWav, pathCsv, annotations);
+                        Audio.write(pathWav, pathCsv, annotations, info);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
         };
-        th.start();
+        th.run();
     }
 
     private void seek() throws Exception {
@@ -105,13 +105,13 @@ public class SpectrogramController implements KeyListener, MouseListener {
             case KeyEvent.VK_1: addAnnotation(stream.getAnnotation(Labels.BP_FAST, params.sample(position), params.sample(position + width))); break;
             case KeyEvent.VK_2: addAnnotation(stream.getAnnotation(Labels.BP_MED,  params.sample(position), params.sample(position + width))); break;
             case KeyEvent.VK_3: addAnnotation(stream.getAnnotation(Labels.EC_FAST, params.sample(position), params.sample(position + width))); break;
-            case KeyEvent.VK_4: addAnnotation(stream.getAnnotation(Labels.EC_MED, params.sample(position), params.sample(position + width))); break;
+            case KeyEvent.VK_4: addAnnotation(stream.getAnnotation(Labels.EC_MED, params.sample(position),  params.sample(position + width))); break;
             case KeyEvent.VK_5: addAnnotation(stream.getAnnotation(Labels.EC_SLOW, params.sample(position), params.sample(position + width))); break;
             case KeyEvent.VK_6: addAnnotation(stream.getAnnotation(Labels.WSTL_UP, params.sample(position), params.sample(position + width))); break;
             case KeyEvent.VK_7: addAnnotation(stream.getAnnotation(Labels.WSTL_DOWN, params.sample(position), params.sample(position + width))); break;
             case KeyEvent.VK_8: addAnnotation(stream.getAnnotation(Labels.WSTL_CONV, params.sample(position), params.sample(position + width))); break;
             case KeyEvent.VK_9: addAnnotation(stream.getAnnotation(Labels.WSTL_CONC, params.sample(position), params.sample(position + width))); break;
-            case KeyEvent.VK_0: addAnnotation(stream.getAnnotation(Labels.NOISE, params.sample(position), width)); break;
+            case KeyEvent.VK_0: addAnnotation(stream.getAnnotation(Labels.NOISE, params.sample(position),     params.sample(position + width))); break;
             case KeyEvent.VK_D: right(); break;
             case KeyEvent.VK_A: left(); break;
             case KeyEvent.VK_S: save(); break;

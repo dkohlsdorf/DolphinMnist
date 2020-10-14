@@ -1,16 +1,21 @@
 package org.dkohl.wdp.spectrogram;
 
+import org.dkohl.wdp.io.AudioWritingUpdate;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InfoComponent extends JLabel {
+public class InfoComponent extends JLabel implements AudioWritingUpdate {
 
     private ArrayList<Annotation> annotations;
     private HashMap<Integer, Labels> mapping;
     private AudioStream stream;
     private int width;
+    private int position;
+    private int percentageDone;
+    private String filename;
 
     public InfoComponent(ArrayList<Annotation> annotations, AudioStream stream, int width) {
         this.annotations = annotations;
@@ -31,6 +36,18 @@ public class InfoComponent extends JLabel {
     }
 
     public void refresh(int position) {
+        this.position = position;
+        update();
+    }
+
+    @Override
+    public void progress(int percentageDone, String filename) {
+        this.percentageDone = percentageDone;
+        this.filename = filename;
+        update();
+    }
+
+    private void update() {
         StringBuilder builder = new StringBuilder();
         builder.append("<html><body bgcolor=\"white\">");
         builder.append("<h2> Controls </h2> <ul>");
@@ -57,7 +74,12 @@ public class InfoComponent extends JLabel {
         builder.append(String.format("<li> Stop:  %s</li>", stream.format(position + width)));
         builder.append(String.format("<li> File:  %s</li>", stream.currentFileName()));
         builder.append("</ul>");
-
+        if(filename != null) {
+            String cmp[] = filename.split("/");
+            builder.append("<h2> Writing </h2> <ul>");
+            builder.append(String.format("<li> Filename: %s </li>", cmp[cmp.length - 1]));
+            builder.append(String.format("<li> Percentage Done: %d %%</li>", percentageDone));
+        }
         builder.append("</body></html>");
         setText(builder.toString());
     }
