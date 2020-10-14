@@ -23,6 +23,13 @@ public class GrayscaleImager {
             }
         }
 
+        int nFreq   = 44100 / 2;
+        int binSize = nFreq / d;
+        int kHz     = 1000 / binSize;
+        for(int j = 1; j < d; j+= kHz) {
+            context.setColor(Color.RED);
+            context.drawString(String.format("%d [kHz]", (j * binSize) / 1000), 10, (int) ((d - j) * scaleY));
+        }
     }
 
 }

@@ -1,0 +1,18 @@
+{
+  "platform": "mac",
+  "jdk": "https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.2%2B12/OpenJDK14U-jdk_x64_mac_hotspot_14.0.2_12.tar.gz",
+  "executable": "DolphinMNIST",
+  "classpath": [
+    "AudioMNIST.jar"
+  ],
+  "removelibs": [
+    "AudioMNIST.jar"
+  ],
+  "mainclass": "org.dkohl.wdp.spectrogram.AudioMNIST",
+  "vmargs": [
+    "Xmx1G"
+  ],
+  "resources": [],
+  "minimizejre": "soft",
+  "output": "out-mac"
+}
