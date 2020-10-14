@@ -62,4 +62,9 @@ public class AudioStream {
         return new Annotation(offset + start, offset + stop, label, files[currentFile]);
     }
 
+    public double[] current(int start, int stop) {
+        int offset = currentOffset - windowSize;
+        return Arrays.copyOfRange(audio, offset + start, offset + stop);
+    }
+
 }

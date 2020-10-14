@@ -3,7 +3,6 @@ package org.dkohl.wdp.spectrogram;
 import org.dkohl.wdp.io.AudioWritingUpdate;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -55,6 +54,7 @@ public class InfoComponent extends JLabel implements AudioWritingUpdate {
         builder.append("<li> [d]: forward </li>");
         builder.append("<li> [f]: fast forward </li>");
         builder.append("<li> [s]: save </li>");
+        builder.append("<li> [p]: play window </li>");
         builder.append("</ul>");
 
         builder.append("<h2> Annotations </h2> <ul>");

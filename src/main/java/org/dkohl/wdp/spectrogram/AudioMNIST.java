@@ -1,6 +1,8 @@
 package org.dkohl.wdp.spectrogram;
 
+import org.dkohl.wdp.io.Audio;
 import org.dkohl.wdp.io.Properties;
+import org.dkohl.wdp.io.StdAudio;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +24,7 @@ public class AudioMNIST {
         return filePath;
     }
 
-    public static void main(String... args)  {
+    public static void main(String... args)  throws Exception {
         SwingUtilities.invokeLater(() -> {
             try {
                 Properties prop = Properties.defaultProperties();
@@ -72,6 +74,6 @@ public class AudioMNIST {
                 e.printStackTrace();
             }
         });
-        }
-
     }
+
+}

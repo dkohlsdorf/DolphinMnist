@@ -1,6 +1,7 @@
 package org.dkohl.wdp.spectrogram;
 
 import org.dkohl.wdp.io.Audio;
+import org.dkohl.wdp.io.StdAudio;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -99,6 +100,9 @@ public class SpectrogramController implements KeyListener, MouseListener {
         spectrogramView.repaint();
     }
 
+    private void play() {
+        StdAudio.play(stream.current(params.sample(position), params.sample(position + width)));
+    }
 
     private void handle(KeyEvent e) throws Exception {
         switch (e.getExtendedKeyCode()) {
@@ -116,6 +120,7 @@ public class SpectrogramController implements KeyListener, MouseListener {
             case KeyEvent.VK_A: left(); break;
             case KeyEvent.VK_S: save(); break;
             case KeyEvent.VK_F: seek(); break;
+            case KeyEvent.VK_P: play(); break;
         }
         info.refresh(position);
     }
