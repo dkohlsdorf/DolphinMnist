@@ -40,8 +40,19 @@ public class SpectrogramController implements KeyListener, MouseListener {
         this.info = info;
     }
 
-    private void addAnnotation(Annotation a) {
-        annotations.add(a);
+    private void addAnnotation(Labels label) {
+        Annotation match = Annotation.findAnnotation(annotations, params, stream, position, position + width);
+        if(label == null && match != null) {
+            annotations.remove(match);
+        }
+        if(label != null){
+            if (match == null) {
+                Annotation a = stream.getAnnotation(label, params.sample(position), params.sample(position + width));
+                annotations.add(a);
+            } else {
+                match.setAnnotation(label);
+            }
+        }
     }
 
     private void save() {
@@ -90,14 +101,12 @@ public class SpectrogramController implements KeyListener, MouseListener {
         } else {
             position += speed;
             spectrogramView.setPosition(position);
-            spectrogramView.repaint();
         }
     }
 
     private void left() {
         if(position > 0) position -= speed;
         spectrogramView.setPosition(position);
-        spectrogramView.repaint();
     }
 
     private void play() {
@@ -106,23 +115,25 @@ public class SpectrogramController implements KeyListener, MouseListener {
 
     private void handle(KeyEvent e) throws Exception {
         switch (e.getExtendedKeyCode()) {
-            case KeyEvent.VK_1: addAnnotation(stream.getAnnotation(Labels.BP_FAST, params.sample(position), params.sample(position + width))); break;
-            case KeyEvent.VK_2: addAnnotation(stream.getAnnotation(Labels.BP_MED,  params.sample(position), params.sample(position + width))); break;
-            case KeyEvent.VK_3: addAnnotation(stream.getAnnotation(Labels.EC_FAST, params.sample(position), params.sample(position + width))); break;
-            case KeyEvent.VK_4: addAnnotation(stream.getAnnotation(Labels.EC_MED, params.sample(position),  params.sample(position + width))); break;
-            case KeyEvent.VK_5: addAnnotation(stream.getAnnotation(Labels.EC_SLOW, params.sample(position), params.sample(position + width))); break;
-            case KeyEvent.VK_6: addAnnotation(stream.getAnnotation(Labels.WSTL_UP, params.sample(position), params.sample(position + width))); break;
-            case KeyEvent.VK_7: addAnnotation(stream.getAnnotation(Labels.WSTL_DOWN, params.sample(position), params.sample(position + width))); break;
-            case KeyEvent.VK_8: addAnnotation(stream.getAnnotation(Labels.WSTL_CONV, params.sample(position), params.sample(position + width))); break;
-            case KeyEvent.VK_9: addAnnotation(stream.getAnnotation(Labels.WSTL_CONC, params.sample(position), params.sample(position + width))); break;
-            case KeyEvent.VK_0: addAnnotation(stream.getAnnotation(Labels.NOISE, params.sample(position),     params.sample(position + width))); break;
+            case KeyEvent.VK_1: addAnnotation(Labels.BP_FAST); break;
+            case KeyEvent.VK_2: addAnnotation(Labels.BP_MED); break;
+            case KeyEvent.VK_3: addAnnotation(Labels.EC_FAST); break;
+            case KeyEvent.VK_4: addAnnotation(Labels.EC_MED); break;
+            case KeyEvent.VK_5: addAnnotation(Labels.EC_SLOW); break;
+            case KeyEvent.VK_6: addAnnotation(Labels.WSTL_UP); break;
+            case KeyEvent.VK_7: addAnnotation(Labels.WSTL_DOWN); break;
+            case KeyEvent.VK_8: addAnnotation(Labels.WSTL_CONV); break;
+            case KeyEvent.VK_9: addAnnotation(Labels.WSTL_CONC); break;
+            case KeyEvent.VK_0: addAnnotation(Labels.NOISE); break;
             case KeyEvent.VK_D: right(); break;
             case KeyEvent.VK_A: left(); break;
             case KeyEvent.VK_S: save(); break;
             case KeyEvent.VK_F: seek(); break;
             case KeyEvent.VK_P: play(); break;
+            case KeyEvent.VK_X: addAnnotation(null); break;
         }
         info.refresh(position);
+        spectrogramView.repaint();
     }
 
     @Override

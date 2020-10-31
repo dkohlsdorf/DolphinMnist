@@ -19,6 +19,22 @@ public class AudioStream {
         currentFile = -1;
     }
 
+    public boolean inWindow(Annotation annotation) {
+        int offset = currentOffset - windowSize;
+        int viewEnd = offset + windowSize;
+        boolean sameFile = annotation.getFile().equals(files[currentFile]);
+        boolean inRange  = annotation.getStart() >= offset && annotation.getStop() <= viewEnd;
+        return sameFile && inRange;
+    }
+
+    public int[] spectrogramRange(Annotation annotation, SpectrogramParams params) {
+        assert inWindow(annotation);
+        int offset = currentOffset - windowSize;
+        int start = params.fftSample((int) annotation.getStart() - offset);
+        int stop  = params.fftSample((int) annotation.getStop()  - offset);
+        return new int[]{start, stop};
+    }
+
     private boolean currentDone() {
         return audio == null || currentOffset >= audio.length;
     }

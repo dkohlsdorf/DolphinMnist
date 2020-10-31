@@ -21,6 +21,10 @@ public class SpectrogramParams {
         return (fftSample * fftStep) + fftWin;
     }
 
+    public int fftSample(int sample) {
+        return (sample - fftWin) / fftStep;
+    }
+
     public int getFftWin() {
         return fftWin;
     }

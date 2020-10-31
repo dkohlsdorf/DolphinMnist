@@ -34,6 +34,16 @@ public class Annotation {
         return counts;
     }
 
+    public static Annotation findAnnotation(ArrayList<Annotation> annotations, SpectrogramParams params, AudioStream stream, int start, int stop) {
+        for(Annotation annotation : annotations) {
+            int[] window = stream.spectrogramRange(annotation, params);
+            if(window[0] == start && window[1] == stop) {
+                return annotation;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Annotation{" +
@@ -48,6 +58,10 @@ public class Annotation {
         return start;
     }
 
+    public void setAnnotation(Labels annotation) {
+        this.annotation = annotation;
+    }
+
     public long getStop() {
         return stop;
     }
@@ -59,4 +73,5 @@ public class Annotation {
     public String getFile() {
         return file;
     }
+
 }

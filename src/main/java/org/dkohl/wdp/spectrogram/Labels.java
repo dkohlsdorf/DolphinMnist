@@ -1,6 +1,7 @@
 package org.dkohl.wdp.spectrogram;
 
 public enum Labels {
+    NOISE,
     BP_FAST,
     BP_MED,
     EC_FAST,
@@ -9,6 +10,5 @@ public enum Labels {
     WSTL_UP,
     WSTL_DOWN,
     WSTL_CONV,
-    WSTL_CONC,
-    NOISE
+    WSTL_CONC
 }

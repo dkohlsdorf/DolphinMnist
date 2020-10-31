@@ -36,13 +36,16 @@ public class AudioMNIST {
                     SpectrogramParams params = new SpectrogramParams(prop.getFftWin(), prop.getFftStep());
                     Spectrogram spec = new Spectrogram(audio, params);
 
-                    InfoComponent info = new InfoComponent(annotations, s, prop.getMnistWin());
+                    InfoComponent info = new InfoComponent(annotations, s, params, prop.getMnistWinDFT());
                     info.setPreferredSize(new Dimension(300, 600));
 
                     AudioComponent audioCmp = new AudioComponent(audio);
                     audioCmp.setPreferredSize(new Dimension(500, 100));
 
-                    SpectrogramComponent specCmp = new SpectrogramComponent(spec, prop.getMnistWinDFT());
+                    AnnotationPlot annotationPlot = new AnnotationPlot(params, annotations, s);
+                    RegionImager windowPlot = new RegionImager(params, annotations, s);
+
+                    SpectrogramComponent specCmp = new SpectrogramComponent(spec, windowPlot, annotationPlot, prop.getMnistWinDFT());
                     specCmp.setPreferredSize(new Dimension(500, 500));
 
                     SpectrogramController controller = new SpectrogramController(s, spec, params, specCmp, audioCmp, info, prop.getMnistWinDFT(), prop.getMnistStepDFT(), annotations);

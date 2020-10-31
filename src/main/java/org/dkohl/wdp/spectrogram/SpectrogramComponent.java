@@ -8,11 +8,15 @@ public class SpectrogramComponent extends JComponent {
     private Spectrogram spectrogram;
     private int position;
     private int width;
+    private AnnotationPlot annotationPlot;
+    private RegionImager regionImager;
 
-    public SpectrogramComponent(Spectrogram spectrogram, int width) {
+    public SpectrogramComponent(Spectrogram spectrogram, RegionImager regionImager, AnnotationPlot annotationPlot, int width) {
         this.spectrogram = spectrogram;
         this.position = 0;
         this.width = width;
+        this.annotationPlot = annotationPlot;
+        this.regionImager = regionImager;
     }
 
     public void setSpectrogram(Spectrogram spectrogram) {
@@ -34,6 +38,7 @@ public class SpectrogramComponent extends JComponent {
         double scaleX = scale(spectrogram.getTime(), dim.width);
         double scaleY = scale(spectrogram.getBins(), dim.height);
         GrayscaleImager.plot(spectrogram, g2d, scaleX, scaleY);
-        RegionImager.plot(g2d, position, width, scaleX,dim.height, new Color(0.0f, 1.0f, 0.0f, 0.2f), Color.RED);
+        regionImager.plot(g2d, position, width, scaleX,dim.height, new Color(0.0f, 1.0f, 0.0f, 0.2f), Color.RED);
+        annotationPlot.plot(g2d, scaleX);
     }
 }

@@ -9,28 +9,18 @@ import java.util.HashMap;
 public class InfoComponent extends JLabel implements AudioWritingUpdate {
 
     private ArrayList<Annotation> annotations;
-    private HashMap<Integer, Labels> mapping;
     private AudioStream stream;
+    private SpectrogramParams params;
     private int width;
     private int position;
     private int percentageDone;
     private String filename;
 
-    public InfoComponent(ArrayList<Annotation> annotations, AudioStream stream, int width) {
+    public InfoComponent(ArrayList<Annotation> annotations, AudioStream stream, SpectrogramParams params, int width) {
         this.annotations = annotations;
         this.stream = stream;
-        this.mapping = new HashMap<>();
-        this.mapping.put(1, Labels.BP_FAST);
-        this.mapping.put(2, Labels.BP_MED);
-        this.mapping.put(3, Labels.EC_FAST);
-        this.mapping.put(4, Labels.EC_MED);
-        this.mapping.put(5, Labels.EC_SLOW);
-        this.mapping.put(6, Labels.WSTL_UP);
-        this.mapping.put(7, Labels.WSTL_DOWN);
-        this.mapping.put(8, Labels.WSTL_CONV);
-        this.mapping.put(9, Labels.WSTL_CONC);
-        this.mapping.put(0, Labels.NOISE);
         this.width = width;
+        this.params = params;
         refresh(0);
     }
 
@@ -55,25 +45,32 @@ public class InfoComponent extends JLabel implements AudioWritingUpdate {
         builder.append("<li> [f]: fast forward </li>");
         builder.append("<li> [s]: save </li>");
         builder.append("<li> [p]: play window </li>");
+        builder.append("<li> [x]: delete </li>");
         builder.append("</ul>");
 
         builder.append("<h2> Annotations </h2> <ul>");
         HashMap<Labels, Integer> counts = Annotation.counts(annotations);
-        for(int i = 0; i < 10; i++) {
-            Labels l = mapping.get(i);
+
+        for(Labels l : Labels.values()) {
             int count = 0;
             if(counts.containsKey(l)) {
                 count = counts.get(l);
             }
-            builder.append(String.format("<li> [%d]: %s (%d) </li>", i, l.name(), count));
+            builder.append(String.format("<li> <p style=\"background-color:%s;color:#ffffff;\"> [%d]: %s (%d) </p></li>", AnnotationColor.COLORS[l.ordinal()], l.ordinal(), l.name(), count));
         }
         builder.append("</ul>");
 
+        Annotation match = Annotation.findAnnotation(annotations, params, stream, position, position + width);
+
         builder.append("<h2> Current </h2> <ul>");
-        builder.append(String.format("<li> Start: %s</li>", stream.format(position)));
-        builder.append(String.format("<li> Stop:  %s</li>", stream.format(position + width)));
+        builder.append(String.format("<li> Start: %s</li>", stream.format(params.sample(position))));
+        builder.append(String.format("<li> Stop:  %s</li>", stream.format(params.sample(position + width))));
         builder.append(String.format("<li> File:  %s</li>", stream.currentFileName()));
+        if(match != null) {
+            builder.append(String.format("<li> Label:  %s</li>", match.getAnnotation().name()));
+        }
         builder.append("</ul>");
+
         if(filename != null) {
             String cmp[] = filename.split("/");
             builder.append("<h2> Writing </h2> <ul>");
