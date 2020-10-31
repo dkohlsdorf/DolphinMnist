@@ -56,7 +56,7 @@ public class InfoComponent extends JLabel implements AudioWritingUpdate {
             if(counts.containsKey(l)) {
                 count = counts.get(l);
             }
-            builder.append(String.format("<li> <p style=\"background-color:%s;color:#ffffff;\"> [%d]: %s (%d) </p></li>", AnnotationColor.COLORS[l.ordinal()], l.ordinal(), l.name(), count));
+            builder.append(String.format("<li> <p style=\"background-color:%s;\"> [%d]: %s (%d) </p></li>", AnnotationColor.COLORS[l.ordinal()], l.ordinal(), l.name(), count));
         }
         builder.append("</ul>");
 

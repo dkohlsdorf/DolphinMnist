@@ -5,7 +5,7 @@ import java.awt.*;
 public class AnnotationColor {
     public static final String[] COLORS = new String[]{
             "#006400",
-            "#00008b",
+            "#3737fa",
             "#b03060",
             "#ff4500",
             "#ffff00",
