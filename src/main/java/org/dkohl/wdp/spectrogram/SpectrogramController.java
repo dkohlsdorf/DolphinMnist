@@ -155,9 +155,7 @@ public class SpectrogramController implements KeyListener, MouseListener {
             }
         }
         if(match != null) {
-            System.out.println(position);
             position = params.fftSample((int) match.getStart() - stream.getCurrentOffset());
-            System.out.println(position);
         }
         spectrogramView.setPosition(position);
         spectrogramView.repaint();
