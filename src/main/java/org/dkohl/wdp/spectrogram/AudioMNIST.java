@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AudioMNIST {
 
@@ -30,6 +31,14 @@ public class AudioMNIST {
                 Properties prop = Properties.defaultProperties();
                 String[] files = files();
                 ArrayList<Annotation> annotations = new ArrayList<>();
+                if(files.length == 1 && files[0].endsWith(".csv")) {
+                    annotations = Annotation.fromFile(files[0]);
+                    files = Annotation.files(annotations);
+                }
+                if(files.length == 0) {
+                    System.exit(0);
+                }
+
                 AudioStream s = new AudioStream(files, prop.getBuffer());
                 double audio[] = s.next();
                 if(audio != null) {

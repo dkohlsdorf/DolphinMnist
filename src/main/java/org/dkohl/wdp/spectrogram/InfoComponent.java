@@ -61,7 +61,6 @@ public class InfoComponent extends JLabel implements AudioWritingUpdate {
         builder.append("</ul>");
 
         Annotation match = Annotation.findAnnotation(annotations, params, stream, position, position + width);
-
         builder.append("<h2> Current </h2> <ul>");
         builder.append(String.format("<li> Start: %s</li>", stream.format(params.sample(position))));
         builder.append(String.format("<li> Stop:  %s</li>", stream.format(params.sample(position + width))));

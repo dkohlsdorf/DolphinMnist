@@ -40,14 +40,14 @@ public class AudioStream {
     }
 
     private boolean done() {
-        return currentFile >= files.length;
+        return currentFile + 1 >= files.length;
     }
 
     public double[] next() throws Exception {
         if(currentDone()) {
+            if(done()) return null;
             currentOffset = 0;
             currentFile++;
-            if(done()) return null;
             audio = Audio.read(files[currentFile]);
         }
         int until = currentOffset + windowSize;
@@ -60,6 +60,10 @@ public class AudioStream {
     public String currentFileName() {
         String[] cmp = files[currentFile].split("/");
         return cmp[cmp.length - 1];
+    }
+
+    public String currentFile() {
+        return files[currentFile];
     }
 
     public String format(int x) {

@@ -148,6 +148,15 @@ public class SpectrogramController implements KeyListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         position = (e.getX() * spectrogram.getTime() / spectrogramView.getSize().width);
+        Annotation match = null;
+        for(Annotation annotation : annotations) {
+            if(e.getY() <= 100 && annotation.in(params.sample(position))) {
+                match = annotation;
+            }
+        }
+        if(match != null) {
+            position = params.fftSample((int) match.getStart());
+        }
         spectrogramView.setPosition(position);
         spectrogramView.repaint();
         info.refresh(position);
