@@ -9,14 +9,14 @@ import java.util.HashMap;
 public class InfoComponent extends JLabel implements AudioWritingUpdate {
 
     private ArrayList<Annotation> annotations;
-    private AudioStream stream;
+    private AudioReader stream;
     private SpectrogramParams params;
     private int width;
     private int position;
     private int percentageDone;
     private String filename;
 
-    public InfoComponent(ArrayList<Annotation> annotations, AudioStream stream, SpectrogramParams params, int width) {
+    public InfoComponent(ArrayList<Annotation> annotations, AudioReader stream, SpectrogramParams params, int width) {
         this.annotations = annotations;
         this.stream = stream;
         this.width = width;
@@ -43,6 +43,7 @@ public class InfoComponent extends JLabel implements AudioWritingUpdate {
         builder.append("<li> [a]: back </li>");
         builder.append("<li> [d]: forward </li>");
         builder.append("<li> [f]: fast forward </li>");
+        builder.append("<li> [b]: fast backwards </li>");
         builder.append("<li> [s]: save </li>");
         builder.append("<li> [p]: play window </li>");
         builder.append("<li> [x]: delete </li>");

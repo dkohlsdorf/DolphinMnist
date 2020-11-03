@@ -39,8 +39,8 @@ public class AudioMNIST {
                     System.exit(0);
                 }
 
-                AudioStream s = new AudioStream(files, prop.getBuffer());
-                double audio[] = s.next();
+                AudioReader s = new AudioReader(files, prop.getBuffer());
+                double audio[] = s.getData();
                 if(audio != null) {
                     SpectrogramParams params = new SpectrogramParams(prop.getFftWin(), prop.getFftStep());
                     Spectrogram spec = new Spectrogram(audio, params);

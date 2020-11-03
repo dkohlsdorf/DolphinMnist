@@ -66,7 +66,7 @@ public class Annotation {
         return counts;
     }
 
-    public static Annotation findAnnotation(ArrayList<Annotation> annotations, SpectrogramParams params, AudioStream stream, int start, int stop) {
+    public static Annotation findAnnotation(ArrayList<Annotation> annotations, SpectrogramParams params, AudioReader stream, int start, int stop) {
         for(Annotation annotation : annotations) {
             if(annotation.getFile().equals(stream.currentFile())) {
                 int[] window = stream.spectrogramRange(annotation, params);

@@ -7,9 +7,9 @@ public class RegionImager {
 
     private SpectrogramParams params;
     private ArrayList<Annotation> annotations;
-    private AudioStream stream;
+    private AudioReader stream;
 
-    public RegionImager(SpectrogramParams params, ArrayList<Annotation> annotations, AudioStream stream) {
+    public RegionImager(SpectrogramParams params, ArrayList<Annotation> annotations, AudioReader stream) {
         this.params = params;
         this.annotations = annotations;
         this.stream = stream;

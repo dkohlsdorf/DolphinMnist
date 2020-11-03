@@ -17,7 +17,7 @@ public class SpectrogramController implements KeyListener, MouseListener {
 
     private ArrayList<Annotation> annotations;
 
-    private AudioStream stream;
+    private AudioReader stream;
     private SpectrogramParams params;
     private SpectrogramComponent spectrogramView;
     private InfoComponent info;
@@ -27,7 +27,7 @@ public class SpectrogramController implements KeyListener, MouseListener {
     private int width;
     private int speed;
 
-    public SpectrogramController(AudioStream stream, Spectrogram s, SpectrogramParams params, SpectrogramComponent spectrogramView, AudioComponent audioView, InfoComponent info, int width, int speed, ArrayList<Annotation> annotations) {
+    public SpectrogramController(AudioReader stream, Spectrogram s, SpectrogramParams params, SpectrogramComponent spectrogramView, AudioComponent audioView, InfoComponent info, int width, int speed, ArrayList<Annotation> annotations) {
         this.stream = stream;
         this.params = params;
         this.spectrogramView = spectrogramView;
@@ -80,33 +80,50 @@ public class SpectrogramController implements KeyListener, MouseListener {
         th.run();
     }
 
-    private void seek() throws Exception {
-        double x[] = stream.next();
-        if(x == null) {
-            save();
-            System.exit(0);
-        }
+    private void fwd() throws Exception {
+        boolean didMove = stream.fwd();
+        double x[] = stream.getData();
         spectrogram = new Spectrogram(x, params);
         spectrogramView.setSpectrogram(spectrogram);
         audioView.setAudio(x);
-        position = 0;
+        if(didMove) position = 0;
+        spectrogramView.repaint();
+        audioView.repaint();
+        spectrogramView.setPosition(position);
+    }
+
+    private void bwd() throws Exception {
+        boolean didMove = stream.bwd();
+        double x[] = stream.getData();
+        spectrogram = new Spectrogram(x, params);
+        spectrogramView.setSpectrogram(spectrogram);
+        audioView.setAudio(x);
+        if(didMove) {
+            position = spectrogram.getTime() - width;
+        } else {
+            position = 0;
+        }
         spectrogramView.repaint();
         audioView.repaint();
         spectrogramView.setPosition(position);
     }
 
     private void right() throws Exception {
-        if(position + width >= spectrogram.getTime()) {
-            seek();
+        if(position + speed >= spectrogram.getTime()) {
+            fwd();
         } else {
             position += speed;
             spectrogramView.setPosition(position);
         }
     }
 
-    private void left() {
-        if(position > 0) position -= speed;
-        spectrogramView.setPosition(position);
+    private void left() throws Exception{
+        if(position - speed <= 0) {
+            bwd();
+        } else {
+            position -= speed;
+            spectrogramView.setPosition(position);
+        }
     }
 
     private void play() {
@@ -128,7 +145,8 @@ public class SpectrogramController implements KeyListener, MouseListener {
             case KeyEvent.VK_D: right(); break;
             case KeyEvent.VK_A: left(); break;
             case KeyEvent.VK_S: save(); break;
-            case KeyEvent.VK_F: seek(); break;
+            case KeyEvent.VK_F: fwd(); break;
+            case KeyEvent.VK_B: bwd(); break;
             case KeyEvent.VK_P: play(); break;
             case KeyEvent.VK_X: addAnnotation(null); break;
         }
