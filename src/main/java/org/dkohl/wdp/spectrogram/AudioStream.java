@@ -77,9 +77,17 @@ public class AudioStream {
         return String.format("%d:%d:%f", hours, mins, secs);
     }
 
-    public Annotation getAnnotation(Labels label, int start, int stop) {
+    public int getCurrentOffset() {
+        return currentOffset - windowSize;
+    }
+
+    public int sample(int window) {
         int offset = currentOffset - windowSize;
-        return new Annotation(offset + start, offset + stop, label, files[currentFile]);
+        return window + offset;
+    }
+
+    public Annotation getAnnotation(Labels label, int start, int stop) {
+        return new Annotation(sample(start), sample(stop), label, files[currentFile]);
     }
 
     public double[] current(int start, int stop) {

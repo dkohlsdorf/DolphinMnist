@@ -150,12 +150,14 @@ public class SpectrogramController implements KeyListener, MouseListener {
         position = (e.getX() * spectrogram.getTime() / spectrogramView.getSize().width);
         Annotation match = null;
         for(Annotation annotation : annotations) {
-            if(e.getY() <= 100 && annotation.in(params.sample(position))) {
+            if(annotation.in(stream.sample(params.sample(position)))) {
                 match = annotation;
             }
         }
         if(match != null) {
-            position = params.fftSample((int) match.getStart());
+            System.out.println(position);
+            position = params.fftSample((int) match.getStart() - stream.getCurrentOffset());
+            System.out.println(position);
         }
         spectrogramView.setPosition(position);
         spectrogramView.repaint();
