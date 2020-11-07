@@ -74,6 +74,7 @@ public class AudioMNIST {
                     panel2.setBackground(Color.WHITE);
 
                     JFrame frame = new JFrame("Audio MNIST");
+                    frame.setFocusable(true);
                     frame.setBackground(Color.WHITE);
                     frame.addKeyListener(controller);
                     frame.add(panel2);

@@ -131,24 +131,24 @@ public class SpectrogramController implements KeyListener, MouseListener {
     }
 
     private void handle(KeyEvent e) throws Exception {
-        switch (e.getExtendedKeyCode()) {
-            case KeyEvent.VK_1: addAnnotation(Labels.BP_FAST); break;
-            case KeyEvent.VK_2: addAnnotation(Labels.BP_MED); break;
-            case KeyEvent.VK_3: addAnnotation(Labels.EC_FAST); break;
-            case KeyEvent.VK_4: addAnnotation(Labels.EC_MED); break;
-            case KeyEvent.VK_5: addAnnotation(Labels.EC_SLOW); break;
-            case KeyEvent.VK_6: addAnnotation(Labels.WSTL_UP); break;
-            case KeyEvent.VK_7: addAnnotation(Labels.WSTL_DOWN); break;
-            case KeyEvent.VK_8: addAnnotation(Labels.WSTL_CONV); break;
-            case KeyEvent.VK_9: addAnnotation(Labels.WSTL_CONC); break;
-            case KeyEvent.VK_0: addAnnotation(Labels.NOISE); break;
-            case KeyEvent.VK_D: right(); break;
-            case KeyEvent.VK_A: left(); break;
-            case KeyEvent.VK_S: save(); break;
-            case KeyEvent.VK_F: fwd(); break;
-            case KeyEvent.VK_B: bwd(); break;
-            case KeyEvent.VK_P: play(); break;
-            case KeyEvent.VK_X: addAnnotation(null); break;
+        switch (e.getKeyChar()) {
+            case '1': addAnnotation(Labels.BP_FAST); break;
+            case '2': addAnnotation(Labels.BP_MED); break;
+            case '3': addAnnotation(Labels.EC_FAST); break;
+            case '4': addAnnotation(Labels.EC_MED); break;
+            case '5': addAnnotation(Labels.EC_SLOW); break;
+            case '6': addAnnotation(Labels.WSTL_UP); break;
+            case '7': addAnnotation(Labels.WSTL_DOWN); break;
+            case '8': addAnnotation(Labels.WSTL_CONV); break;
+            case '9': addAnnotation(Labels.WSTL_CONC); break;
+            case '0': addAnnotation(Labels.NOISE); break;
+            case 'd': right(); break;
+            case 'a': left(); break;
+            case 's': save(); break;
+            case 'f': fwd(); break;
+            case 'b': bwd(); break;
+            case 'p': play(); break;
+            case 'x': addAnnotation(null); break;
         }
         info.refresh(position);
         spectrogramView.repaint();
