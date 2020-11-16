@@ -30,14 +30,10 @@ public class Spectrogram {
             }
             DoubleFFT_1D fft = new DoubleFFT_1D(params.getFftWin());
             fft.realForward(window);
-            double max = Double.NEGATIVE_INFINITY;
-            double min = Double.POSITIVE_INFINITY;
             for(int j = 0; j < params.fftBins(); j++) {
                 double re  = window[params.getFftWin() - (2*j) - 1];
                 double im  = window[params.getFftWin() - (2*j+1) - 1];
                 double mag = Math.sqrt(re * re + im * im);
-                if(mag > max) max = mag;
-                if(mag < min) min = mag;
                 set(t, j, mag);
             }
             t += 1;
