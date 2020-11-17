@@ -3,6 +3,11 @@ package org.dkohl.wdp.spectrogram;
 import org.jtransforms.fft.DoubleFFT_1D;
 
 public class Spectrogram {
+
+    final double EPS = 10e-6;
+    final double DYN_RANGE_OFFSET = 2;
+    final double DYN_RANGE_EXP    = 0.5;
+
     private double flat[];
     private int time;
     private int bins;
@@ -38,6 +43,24 @@ public class Spectrogram {
             }
             t += 1;
         }
+    }
+
+    public Spectrogram pcen(SpectrogramParams params) {
+        Spectrogram pcen   = new Spectrogram(time, bins);
+        Spectrogram smoothed = new Spectrogram(time, bins);
+        // https://librosa.org/doc/main/generated/librosa.pcen.html
+        double smoothing = (Math.sqrt(1 + 4 * Math.pow(time,2)) - 1) / (2 * Math.pow(time,2));
+        for(int t = 1; t < time; t++) {
+            for(int d = 0; d < bins; d++) {
+                double smooth  = smoothing * at(t, d) + (1 - smoothing) * smoothed.at(t - 1, d);
+                double scaler  = Math.pow(EPS + smooth, params.getGain());
+                double pcenVal = Math.pow(at(t, d) / scaler + DYN_RANGE_OFFSET, DYN_RANGE_EXP);
+                pcenVal       -= Math.pow(DYN_RANGE_OFFSET, DYN_RANGE_EXP);
+                smoothed.set(t, d, smooth);
+                pcen.set(t, d, pcenVal);
+            }
+        }
+        return pcen;
     }
 
     public double[] extremes() {

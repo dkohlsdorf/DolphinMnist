@@ -4,23 +4,32 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SpectrogramComponent extends JComponent {
-
+    private SpectrogramParams params;
     private Spectrogram spectrogram;
+    private Spectrogram pcen;
+
     private int position;
     private int width;
     private AnnotationPlot annotationPlot;
     private RegionImager regionImager;
 
-    public SpectrogramComponent(Spectrogram spectrogram, RegionImager regionImager, AnnotationPlot annotationPlot, int width) {
+    public SpectrogramComponent(Spectrogram spectrogram, SpectrogramParams params, RegionImager regionImager, AnnotationPlot annotationPlot, int width) {
         this.spectrogram = spectrogram;
         this.position = 0;
         this.width = width;
         this.annotationPlot = annotationPlot;
         this.regionImager = regionImager;
+        this.params = params;
+        gainChange();
+    }
+
+    public void gainChange() {
+       pcen = spectrogram.pcen(params);
     }
 
     public void setSpectrogram(Spectrogram spectrogram) {
         this.spectrogram = spectrogram;
+        this.pcen = spectrogram.pcen(params);
     }
 
     public void setPosition(int position) {
@@ -35,9 +44,9 @@ public class SpectrogramComponent extends JComponent {
     protected void paintComponent(Graphics g) {
         Dimension dim = getSize();
         Graphics2D g2d = (Graphics2D) g;
-        double scaleX = scale(spectrogram.getTime(), dim.width);
-        double scaleY = scale(spectrogram.getBins(), dim.height);
-        GrayscaleImager.plot(spectrogram, g2d, scaleX, scaleY);
+        double scaleX = scale(pcen.getTime(), dim.width);
+        double scaleY = scale(pcen.getBins(), dim.height);
+        GrayscaleImager.plot(pcen, g2d, scaleX, scaleY);
         regionImager.plot(g2d, position, width, scaleX,dim.height, new Color(0.0f, 1.0f, 0.0f, 0.2f), Color.RED);
         annotationPlot.plot(g2d, scaleX);
     }

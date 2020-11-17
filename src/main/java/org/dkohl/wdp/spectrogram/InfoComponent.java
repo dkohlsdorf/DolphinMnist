@@ -3,6 +3,8 @@ package org.dkohl.wdp.spectrogram;
 import org.dkohl.wdp.io.AudioWritingUpdate;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,6 +23,7 @@ public class InfoComponent extends JLabel implements AudioWritingUpdate {
         this.stream = stream;
         this.width = width;
         this.params = params;
+
         refresh(0);
     }
 

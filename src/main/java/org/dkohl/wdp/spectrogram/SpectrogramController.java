@@ -4,6 +4,9 @@ import org.dkohl.wdp.io.Audio;
 import org.dkohl.wdp.io.StdAudio;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -13,8 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class SpectrogramController implements KeyListener, MouseListener {
-
+public class SpectrogramController implements KeyEventDispatcher, MouseListener {
     private ArrayList<Annotation> annotations;
 
     private AudioReader stream;
@@ -153,14 +155,16 @@ public class SpectrogramController implements KeyListener, MouseListener {
         info.refresh(position);
         spectrogramView.repaint();
     }
-
     @Override
-    public void keyTyped(KeyEvent event) {
-        try {
-            handle(event);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getID() == KeyEvent.KEY_TYPED) {
+            try {
+                handle(event);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return false;
     }
 
     @Override
@@ -179,12 +183,6 @@ public class SpectrogramController implements KeyListener, MouseListener {
         spectrogramView.repaint();
         info.refresh(position);
     }
-
-    @Override
-    public void keyPressed(KeyEvent event) { }
-
-    @Override
-    public void keyReleased(KeyEvent event) { }
 
     @Override
     public void mousePressed(MouseEvent e) { }
