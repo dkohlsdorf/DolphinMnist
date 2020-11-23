@@ -48,7 +48,7 @@ public class AudioMNIST {
                     InfoComponent info = new InfoComponent(annotations, s, params, prop.getMnistWinDFT());
                     info.setPreferredSize(new Dimension(300, 600));
 
-                    AudioComponent audioCmp = new AudioComponent(audio);
+                    AudioComponent audioCmp = new AudioComponent(audio, 100);
                     audioCmp.setPreferredSize(new Dimension(500, 100));
 
                     AnnotationPlot annotationPlot = new AnnotationPlot(params, annotations, s);
@@ -62,8 +62,12 @@ public class AudioMNIST {
                     SpectrogramController controller = new SpectrogramController(s, spec, params, specCmp, audioCmp, info, prop.getMnistWinDFT(), prop.getMnistStepDFT(), annotations);
                     specCmp.addMouseListener(controller);
 
+                    FrequencyComponent freq = new FrequencyComponent(params.fftBins());
+                    freq.setPreferredSize(new Dimension(100, 500));
+
                     JPanel panel = new JPanel();
                     panel.setLayout(new BorderLayout());
+                    panel.add(freq, BorderLayout.WEST);
                     panel.add(specCmp, BorderLayout.CENTER);
                     panel.add(audioCmp, BorderLayout.SOUTH);
                     panel.setPreferredSize(new Dimension(800, 600));

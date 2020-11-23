@@ -17,15 +17,15 @@ public class LinePlot {
         return compressed;
     }
 
-    public static void plot(Graphics2D g2d, double[] raw, int width, int height) {
-        double[] compressed = compress(raw, width);
+    public static void plot(Graphics2D g2d, double[] raw, int width, int height, int offset) {
+        double[] compressed = compress(raw, width - offset);
         double[] extremes = Utils.extremes(compressed);
         double min = extremes[0];
         double max = extremes[1];
         for(int i = 1; i < compressed.length; i++) {
             int h1 = (int) (Utils.normalize(compressed[i - 1], min, max) * height);
             int h2 = (int) (Utils.normalize(compressed[i], min, max) * height);
-            g2d.drawLine((i - 1), h1, i, h2);
+            g2d.drawLine((i - 1) + offset, h1, i + offset, h2);
         }
     }
 

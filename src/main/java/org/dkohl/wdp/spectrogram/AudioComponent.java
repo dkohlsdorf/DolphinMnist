@@ -6,9 +6,11 @@ import java.awt.*;
 public class AudioComponent extends JComponent {
 
     private double[] audio;
+    private int offset;
 
-    public AudioComponent(double[] audio) {
+    public AudioComponent(double[] audio, int offset) {
         this.audio = audio;
+        this.offset = offset;
     }
 
     public void setAudio(double[] audio) {
@@ -22,6 +24,6 @@ public class AudioComponent extends JComponent {
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0,0,dim.width, dim.height);
         g2d.setColor(Color.BLACK);
-        LinePlot.plot(g2d, audio, dim.width, dim.height);
+        LinePlot.plot(g2d, audio, dim.width, dim.height, offset);
     }
 }
