@@ -61,6 +61,7 @@ public class AudioMNIST {
 
                     SpectrogramController controller = new SpectrogramController(s, spec, params, specCmp, audioCmp, info, prop.getMnistWinDFT(), prop.getMnistStepDFT(), annotations);
                     specCmp.addMouseListener(controller);
+                    specCmp.addMouseMotionListener(controller);
 
                     FrequencyComponent freq = new FrequencyComponent(params.fftBins());
                     freq.setPreferredSize(new Dimension(100, 500));

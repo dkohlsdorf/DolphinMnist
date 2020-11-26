@@ -22,9 +22,9 @@ public class Properties {
     }
 
     public static Properties defaultProperties() {
-        int fftWin    = 512;
-        int fftStep   = 128;
-        int buffer    = 10 * 44100;
+        int fftWin    = 1024;
+        int fftStep   = 512;
+        int buffer    = 8 * 44100;
         int mnistWin  = 44100 / 8;
         int mnistStep = 44100 / 32;
         return new Properties(fftWin, fftStep, buffer, mnistWin, mnistStep);

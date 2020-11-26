@@ -38,7 +38,7 @@ public class Spectrogram {
             for(int j = 0; j < params.fftBins(); j++) {
                 double re  = window[params.getFftWin() - (2*j) - 1];
                 double im  = window[params.getFftWin() - (2*j+1) - 1];
-                double mag = Math.sqrt(re * re + im * im);
+                double mag = Math.sqrt(re * re + im * im) ;
                 set(t, j, mag);
             }
             t += 1;

@@ -1,5 +1,7 @@
 package org.dkohl.wdp.spectrogram;
 
+import org.dkohl.wdp.io.Properties;
+
 public class SpectrogramParams {
 
     private int fftWin, fftStep;
@@ -9,6 +11,10 @@ public class SpectrogramParams {
         this.fftWin = fftWin;
         this.fftStep = fftStep;
         this.gain = gain;
+    }
+
+    public int frequency(double fftBin) {
+        return (int) (fftBin * (44100.0 / fftWin));
     }
 
     public int fftBins() {

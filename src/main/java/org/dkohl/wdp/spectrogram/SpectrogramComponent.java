@@ -2,11 +2,14 @@ package org.dkohl.wdp.spectrogram;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class SpectrogramComponent extends JComponent {
     private SpectrogramParams params;
     private Spectrogram spectrogram;
     private Spectrogram pcen;
+    private Measurment measurment;
 
     private int position;
     private int width;
@@ -32,6 +35,10 @@ public class SpectrogramComponent extends JComponent {
         this.pcen = spectrogram.pcen(params);
     }
 
+    public void setMeasurment(Measurment measurment) {
+        this.measurment = measurment;
+    }
+
     public void setPosition(int position) {
         this.position = position;
     }
@@ -49,5 +56,9 @@ public class SpectrogramComponent extends JComponent {
         GrayscaleImager.plot(pcen, g2d, scaleX, scaleY);
         regionImager.plot(g2d, position, width, scaleX,dim.height, new Color(0.0f, 1.0f, 0.0f, 0.2f), Color.RED);
         annotationPlot.plot(g2d, scaleX);
+        if(measurment != null) {
+            MeasurementPlot.plot(params, measurment, g2d, scaleX, scaleY);
+        }
+
     }
 }

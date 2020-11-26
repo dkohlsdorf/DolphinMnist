@@ -7,16 +7,14 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
-public class SpectrogramController implements KeyEventDispatcher, MouseListener {
+public class SpectrogramController implements KeyEventDispatcher, MouseListener, MouseMotionListener {
     private ArrayList<Annotation> annotations;
 
     private AudioReader stream;
@@ -28,6 +26,9 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener 
     private int position;
     private int width;
     private int speed;
+
+    private boolean inMeasurementMode;
+    private Measurment currentMeasurment;
 
     public SpectrogramController(AudioReader stream, Spectrogram s, SpectrogramParams params, SpectrogramComponent spectrogramView, AudioComponent audioView, InfoComponent info, int width, int speed, ArrayList<Annotation> annotations) {
         this.stream = stream;
@@ -157,6 +158,16 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener 
     }
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        if(event.getID() == KeyEvent.KEY_PRESSED && event.getKeyCode() == KeyEvent.VK_SHIFT) {
+            inMeasurementMode = true;
+            return false;
+        }
+        if(event.getID() == KeyEvent.KEY_RELEASED && event.getKeyCode() == KeyEvent.VK_SHIFT) {
+            inMeasurementMode = false;
+            currentMeasurment = null;
+            return false;
+        }
+
         if (event.getID() == KeyEvent.KEY_TYPED) {
             try {
                 handle(event);
@@ -171,12 +182,12 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener 
     public void mouseClicked(MouseEvent e) {
         position = (e.getX() * spectrogram.getTime() / spectrogramView.getSize().width);
         Annotation match = null;
-        for(Annotation annotation : annotations) {
-            if(annotation.in(stream.sample(params.sample(position)))) {
+        for (Annotation annotation : annotations) {
+            if (annotation.in(stream.sample(params.sample(position)))) {
                 match = annotation;
             }
         }
-        if(match != null) {
+        if (match != null) {
             position = params.fftSample((int) match.getStart() - stream.getCurrentOffset());
         }
         spectrogramView.setPosition(position);
@@ -191,8 +202,31 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener 
     public void mouseReleased(MouseEvent e) { }
 
     @Override
-    public void mouseEntered(MouseEvent e) { }
+    public void mouseEntered(MouseEvent e) {
+        spectrogramView.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) {
+        spectrogramView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) { }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if(inMeasurementMode) {
+            position = (e.getX() * spectrogram.getTime() / spectrogramView.getSize().width);
+            int freq = (int) (e.getY() * (params.fftBins() / (double) spectrogramView.getSize().height));
+            if(currentMeasurment == null) {
+                currentMeasurment = new Measurment();
+                currentMeasurment.setStart(position, freq);
+            } else {
+                currentMeasurment.setStop(position, freq);
+            }
+            spectrogramView.setMeasurment(currentMeasurment);
+            spectrogramView.repaint();
+        }
+    }
 }

@@ -14,7 +14,8 @@ public class GrayscaleImager {
         for(int i = 0; i < t; i++) {
             for(int j = 0; j < d; j++) {
                 float norm = 1.0f - (float) Utils.normalize(spectrogram.at(i, j), min, max);
-                context.setColor(new Color(norm, norm, norm, 1));
+                Color heatmap = new Color(norm,norm,norm);
+                context.setColor(heatmap);
                 int x = (int) (i * scaleX);
                 int y = (int) (j * scaleY);
                 int w = (int) Math.max(scaleX, 1);
