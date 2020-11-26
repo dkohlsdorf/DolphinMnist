@@ -5,10 +5,12 @@ import java.util.Arrays;
 public class Measurment {
     private int time[];
     private int frequency[];
+    private String file;
 
     public Measurment() {
         time = new int[]{-1, -1};
         frequency = new int[]{-1, -1};
+        this.file = file;
     }
 
     public double deltaT() {

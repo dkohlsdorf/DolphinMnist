@@ -39,6 +39,7 @@ public class AudioMNIST {
                     System.exit(0);
                 }
 
+                ArrayList<Measurment> measurments = new ArrayList<>();
                 AudioReader s = new AudioReader(files, prop.getBuffer());
                 double audio[] = s.getData();
                 if(audio != null) {

@@ -17,6 +17,10 @@ public class SpectrogramParams {
         return (int) (fftBin * (44100.0 / fftWin));
     }
 
+    public double seconds(double fftbin) {
+        return sample((int) fftbin) / 44100.0;
+    }
+
     public int fftBins() {
         return fftWin / 2;
     }

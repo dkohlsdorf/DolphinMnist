@@ -93,6 +93,9 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener,
         spectrogramView.repaint();
         audioView.repaint();
         spectrogramView.setPosition(position);
+        currentMeasurment = null;
+        spectrogramView.setMeasurment(currentMeasurment);
+        spectrogramView.repaint();
     }
 
     private void bwd() throws Exception {
@@ -109,6 +112,9 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener,
         spectrogramView.repaint();
         audioView.repaint();
         spectrogramView.setPosition(position);
+        currentMeasurment = null;
+        spectrogramView.setMeasurment(currentMeasurment);
+        spectrogramView.repaint();
     }
 
     private void right() throws Exception {
@@ -163,11 +169,11 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener,
             return false;
         }
         if(event.getID() == KeyEvent.KEY_RELEASED && event.getKeyCode() == KeyEvent.VK_SHIFT) {
+            spectrogramView.repaint();
             inMeasurementMode = false;
             currentMeasurment = null;
             return false;
         }
-
         if (event.getID() == KeyEvent.KEY_TYPED) {
             try {
                 handle(event);

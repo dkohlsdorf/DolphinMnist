@@ -4,12 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class SpectrogramComponent extends JComponent {
     private SpectrogramParams params;
     private Spectrogram spectrogram;
     private Spectrogram pcen;
     private Measurment measurment;
+    private ArrayList<Measurment> measurments;
 
     private int position;
     private int width;
@@ -23,6 +25,7 @@ public class SpectrogramComponent extends JComponent {
         this.annotationPlot = annotationPlot;
         this.regionImager = regionImager;
         this.params = params;
+        setMeasurments(new ArrayList<Measurment>());
         gainChange();
     }
 
@@ -33,6 +36,10 @@ public class SpectrogramComponent extends JComponent {
     public void setSpectrogram(Spectrogram spectrogram) {
         this.spectrogram = spectrogram;
         this.pcen = spectrogram.pcen(params);
+    }
+
+    public void setMeasurments(ArrayList<Measurment> measurments) {
+        this.measurments = measurments;
     }
 
     public void setMeasurment(Measurment measurment) {
@@ -57,7 +64,10 @@ public class SpectrogramComponent extends JComponent {
         regionImager.plot(g2d, position, width, scaleX,dim.height, new Color(0.0f, 1.0f, 0.0f, 0.2f), Color.RED);
         annotationPlot.plot(g2d, scaleX);
         if(measurment != null) {
-            MeasurementPlot.plot(params, measurment, g2d, scaleX, scaleY);
+            MeasurementPlot.plot(params, Color.RED, measurment, g2d, scaleX, scaleY);
+            for(Measurment m : measurments) {
+                MeasurementPlot.plot(params, Color.ORANGE, m, g2d, scaleX, scaleY);
+            }
         }
 
     }

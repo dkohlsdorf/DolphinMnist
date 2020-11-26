@@ -50,6 +50,7 @@ public class InfoComponent extends JLabel implements AudioWritingUpdate {
         builder.append("<li> [s]: save </li>");
         builder.append("<li> [p]: play window </li>");
         builder.append("<li> [x]: delete </li>");
+        builder.append("<li> [SHIFT]: frequency measurment mode </li>");
         builder.append("</ul>");
 
         builder.append("<h2> Annotations </h2> <ul>");

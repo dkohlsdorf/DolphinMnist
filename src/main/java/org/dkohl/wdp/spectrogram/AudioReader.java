@@ -69,9 +69,6 @@ public class AudioReader {
         }
     }
 
-
-
-
     public boolean inWindow(Annotation annotation) {
         int offset = currentStart;
         int viewEnd = offset + windowSize;
@@ -120,7 +117,7 @@ public class AudioReader {
     public Annotation getAnnotation(Labels label, int start, int stop) {
         return new Annotation(sample(start), sample(stop), label, files[currentFile]);
     }
-
+    
     public double[] current(int start, int stop) {
         int offset = currentStart;
         return Arrays.copyOfRange(audio, offset + start, offset + stop);
