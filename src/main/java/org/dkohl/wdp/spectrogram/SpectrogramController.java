@@ -87,6 +87,14 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener,
         boolean didMove = stream.fwd();
         double x[] = stream.getData();
         spectrogram = new Spectrogram(x, params);
+        while (spectrogram.getTime() < 250) {
+            didMove = stream.fwd();
+            if(!didMove) {
+                return;
+            }
+            x = stream.getData();
+            spectrogram = new Spectrogram(x, params);
+        }
         spectrogramView.setSpectrogram(spectrogram);
         audioView.setAudio(x);
         if(didMove) position = 0;
