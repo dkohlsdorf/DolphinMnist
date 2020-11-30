@@ -3,6 +3,9 @@ package org.dkohl.wdp.spectrogram;
 import java.awt.*;
 
 public class GrayscaleImager {
+    // Move that to a slider
+    public static float GAIN = 2.5f;
+    public static float BRIGHTNESS = 0.8f;
 
     public static void plot(Spectrogram spectrogram, Graphics2D context, double scaleX, double scaleY) {
         int t = spectrogram.getTime();
@@ -13,8 +16,9 @@ public class GrayscaleImager {
 
         for(int i = 0; i < t; i++) {
             for(int j = 0; j < d; j++) {
-                float norm = 1.0f - (float) Utils.normalize(spectrogram.at(i, j), min, max);
-                Color heatmap = new Color(norm,norm,norm);
+                float val  = (float) Utils.normalize(spectrogram.at(i, j), min, max);
+                float norm = 1.0f - Math.min(GAIN * val, 1.0f);
+                Color heatmap = new Color(BRIGHTNESS * norm, BRIGHTNESS * norm, BRIGHTNESS * norm);
                 context.setColor(heatmap);
                 int x = (int) (i * scaleX);
                 int y = (int) (j * scaleY);

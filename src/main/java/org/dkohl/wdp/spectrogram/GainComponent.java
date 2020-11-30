@@ -6,6 +6,9 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class GainComponent extends JComponent implements ChangeListener {
+    // TODO brightness here
+    private JSlider brightnessSlider;
+    private JLabel  brightnessLabel;
 
     private JSlider gainSlider;
     private JLabel  gain;
