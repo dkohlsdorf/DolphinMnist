@@ -12,13 +12,20 @@ public class SpectrogramComponent extends JComponent {
     private Spectrogram pcen;
     private Measurment measurment;
     private ArrayList<Measurment> measurments;
+    private GrayscaleImager grayImager;
 
     private int position;
     private int width;
     private AnnotationPlot annotationPlot;
     private RegionImager regionImager;
 
-    public SpectrogramComponent(Spectrogram spectrogram, SpectrogramParams params, RegionImager regionImager, AnnotationPlot annotationPlot, int width) {
+    public SpectrogramComponent(Spectrogram spectrogram,
+                                SpectrogramParams params,
+                                RegionImager regionImager,
+                                AnnotationPlot annotationPlot,
+                                GrayscaleImager grayImager,
+                                int width) {
+        this.grayImager = grayImager;
         this.spectrogram = spectrogram;
         this.position = 0;
         this.width = width;
@@ -60,7 +67,7 @@ public class SpectrogramComponent extends JComponent {
         Graphics2D g2d = (Graphics2D) g;
         double scaleX = scale(pcen.getTime(), dim.width);
         double scaleY = scale(pcen.getBins(), dim.height);
-        GrayscaleImager.plot(pcen, g2d, scaleX, scaleY);
+        grayImager.plot(pcen, g2d, scaleX, scaleY);
         regionImager.plot(g2d, position, width, scaleX,dim.height, new Color(0.0f, 1.0f, 0.0f, 0.2f), Color.RED);
         annotationPlot.plot(g2d, scaleX);
         if(measurment != null) {

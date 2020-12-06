@@ -1,8 +1,6 @@
 package org.dkohl.wdp.spectrogram;
 
-import org.dkohl.wdp.io.Properties;
-
-public class SpectrogramParams {
+public class SpectrogramParams implements Adjustable {
 
     private int fftWin, fftStep;
     private double gain;
@@ -53,4 +51,18 @@ public class SpectrogramParams {
         return fftStep;
     }
 
+    @Override
+    public void adjust(double x) {
+        setGain(x);
+    }
+
+    @Override
+    public double value() {
+        return getGain();
+    }
+
+    @Override
+    public String unit() {
+        return "alpha";
+    }
 }

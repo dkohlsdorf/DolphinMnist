@@ -1,14 +1,11 @@
 package org.dkohl.wdp.spectrogram;
 
-import org.dkohl.wdp.io.Audio;
 import org.dkohl.wdp.io.Properties;
-import org.dkohl.wdp.io.StdAudio;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AudioMNIST {
 
@@ -43,6 +40,8 @@ public class AudioMNIST {
                 AudioReader s = new AudioReader(files, prop.getBuffer());
                 double audio[] = s.getData();
                 if(audio != null) {
+                    GrayscaleImager grayscaleImager = new GrayscaleImager();
+
                     SpectrogramParams params = new SpectrogramParams(prop.getFftWin(), prop.getFftStep(), 0.25);
                     Spectrogram spec = new Spectrogram(audio, params);
 
@@ -55,10 +54,11 @@ public class AudioMNIST {
                     AnnotationPlot annotationPlot = new AnnotationPlot(params, annotations, s);
                     RegionImager windowPlot = new RegionImager(params, annotations, s);
 
-                    SpectrogramComponent specCmp = new SpectrogramComponent(spec, params, windowPlot, annotationPlot, prop.getMnistWinDFT());
+                    SpectrogramComponent specCmp = new SpectrogramComponent(spec, params, windowPlot, annotationPlot, grayscaleImager, prop.getMnistWinDFT());
                     specCmp.setPreferredSize(new Dimension(500, 500));
 
-                    GainComponent gainComponent = new GainComponent(specCmp, params);
+                    AdjustableComponent gainComponent = new AdjustableComponent(specCmp, params);
+                    AdjustableComponent brightnessComponent = new AdjustableComponent(specCmp, grayscaleImager);
 
                     SpectrogramController controller = new SpectrogramController(s, spec, params, specCmp, audioCmp, info, prop.getMnistWinDFT(), prop.getMnistStepDFT(), annotations);
                     specCmp.addMouseListener(controller);
@@ -76,18 +76,18 @@ public class AudioMNIST {
                     panel.setBackground(Color.WHITE);
 
                     JPanel infoCtrl = new JPanel();
-                    infoCtrl.setPreferredSize(new Dimension(250, 600));
+                    infoCtrl.setPreferredSize(new Dimension(300, 600));
                     infoCtrl.setBackground(Color.WHITE);
                     infoCtrl.setLayout(new BoxLayout(infoCtrl, 1));
                     infoCtrl.add(info);
                     infoCtrl.add(gainComponent);
+                    infoCtrl.add(brightnessComponent);
 
                     JPanel panel2 = new JPanel();
                     panel2.setLayout(new BorderLayout());
                     panel2.add(panel, BorderLayout.CENTER);
                     panel2.add(infoCtrl, BorderLayout.EAST);
                     panel2.setBackground(Color.WHITE);
-
 
                     JFrame frame = new JFrame("Audio MNIST");
                     frame.setFocusable(true);
