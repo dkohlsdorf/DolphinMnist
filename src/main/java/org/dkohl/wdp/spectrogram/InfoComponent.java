@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class InfoComponent extends JLabel implements AudioWritingUpdate {
 
+    private final KeyMap keymap;
     private ArrayList<Annotation> annotations;
     private AudioReader stream;
     private SpectrogramParams params;
@@ -18,12 +19,12 @@ public class InfoComponent extends JLabel implements AudioWritingUpdate {
     private int percentageDone;
     private String filename;
 
-    public InfoComponent(ArrayList<Annotation> annotations, AudioReader stream, SpectrogramParams params, int width) {
+    public InfoComponent(ArrayList<Annotation> annotations, AudioReader stream, SpectrogramParams params, KeyMap keymap, int width) {
         this.annotations = annotations;
         this.stream = stream;
         this.width = width;
         this.params = params;
-
+        this.keymap =keymap;
         refresh(0);
     }
 
@@ -54,14 +55,16 @@ public class InfoComponent extends JLabel implements AudioWritingUpdate {
         builder.append("</ul>");
 
         builder.append("<h2> Annotations </h2> <ul>");
-        HashMap<Labels, Integer> counts = Annotation.counts(annotations);
+        HashMap<String, Integer> counts = Annotation.counts(annotations);
 
-        for(Labels l : Labels.values()) {
+        for(Character c : keymap.getValues()) {
+            String l = keymap.getLabel(c);
             int count = 0;
             if(counts.containsKey(l)) {
                 count = counts.get(l);
             }
-            builder.append(String.format("<li> <p style=\"background-color:%s;\"> [%d]: %s (%d) </p></li>", AnnotationColor.COLORS[l.ordinal()], l.ordinal(), l.name(), count));
+            int i = c - 48;
+            builder.append(String.format("<li> <p style=\"background-color:%s;\"> [%d]: %s (%d) </p></li>", AnnotationColor.COLORS[i], i, l, count));
         }
         builder.append("</ul>");
 
@@ -71,7 +74,7 @@ public class InfoComponent extends JLabel implements AudioWritingUpdate {
         builder.append(String.format("<li> Stop:  %s</li>", stream.format(params.sample(position + width))));
         builder.append(String.format("<li> File:  %s</li>", stream.currentFileName()));
         if(match != null) {
-            builder.append(String.format("<li> Label:  %s</li>", match.getAnnotation().name()));
+            builder.append(String.format("<li> Label:  %s</li>", match.getAnnotation()));
         }
         builder.append("</ul>");
 
