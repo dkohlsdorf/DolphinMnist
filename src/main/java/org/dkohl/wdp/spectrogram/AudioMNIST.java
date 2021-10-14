@@ -1,5 +1,6 @@
 package org.dkohl.wdp.spectrogram;
 
+
 import org.dkohl.wdp.io.Properties;
 
 import javax.swing.*;
@@ -36,6 +37,7 @@ public class AudioMNIST {
                     System.exit(0);
                 }
 
+                KeyMap keymap = new KeyMap();
                 ArrayList<Measurment> measurments = new ArrayList<>();
                 AudioReader s = new AudioReader(files, prop.getBuffer());
                 double audio[] = s.getData();
@@ -45,14 +47,14 @@ public class AudioMNIST {
                     SpectrogramParams params = new SpectrogramParams(prop.getFftWin(), prop.getFftStep(), 0.25);
                     Spectrogram spec = new Spectrogram(audio, params);
 
-                    InfoComponent info = new InfoComponent(annotations, s, params, prop.getMnistWinDFT());
+                    InfoComponent info = new InfoComponent(annotations, s, params, keymap, prop.getMnistWinDFT());
                     info.setPreferredSize(new Dimension(300, 600));
 
                     AudioComponent audioCmp = new AudioComponent(audio, 100);
                     audioCmp.setPreferredSize(new Dimension(500, 100));
 
-                    AnnotationPlot annotationPlot = new AnnotationPlot(params, annotations, s);
-                    RegionImager windowPlot = new RegionImager(params, annotations, s);
+                    AnnotationPlot annotationPlot = new AnnotationPlot(params, annotations, s, keymap);
+                    RegionImager windowPlot = new RegionImager(params, annotations, s, keymap);
 
                     SpectrogramComponent specCmp = new SpectrogramComponent(spec, params, windowPlot, annotationPlot, grayscaleImager, prop.getMnistWinDFT());
                     specCmp.setPreferredSize(new Dimension(500, 500));
@@ -60,7 +62,7 @@ public class AudioMNIST {
                     AdjustableComponent gainComponent = new AdjustableComponent(specCmp, params);
                     AdjustableComponent brightnessComponent = new AdjustableComponent(specCmp, grayscaleImager);
 
-                    SpectrogramController controller = new SpectrogramController(s, spec, params, specCmp, audioCmp, info, prop.getMnistWinDFT(), prop.getMnistStepDFT(), annotations);
+                    SpectrogramController controller = new SpectrogramController(s, spec, params, specCmp, audioCmp, info, prop.getMnistWinDFT(), prop.getMnistStepDFT(), annotations, keymap);
                     specCmp.addMouseListener(controller);
                     specCmp.addMouseMotionListener(controller);
 

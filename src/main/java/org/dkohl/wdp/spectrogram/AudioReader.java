@@ -114,7 +114,7 @@ public class AudioReader {
         return window + offset;
     }
 
-    public Annotation getAnnotation(Labels label, int start, int stop) {
+    public Annotation getAnnotation(String label, int start, int stop) {
         return new Annotation(sample(start), sample(stop), label, files[currentFile]);
     }
     

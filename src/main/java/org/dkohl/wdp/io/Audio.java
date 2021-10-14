@@ -54,7 +54,7 @@ public class Audio {
 				out.writeFrames(snippet, snippet.length);
 				csvWriter.write(String.format("%d,%s,%s,%d,%d\n",
 						offset,
-						annotation.getAnnotation().name(),
+						annotation.getAnnotation(),
 						annotation.getFile(),
 						annotation.getStart(),
 						annotation.getStop()

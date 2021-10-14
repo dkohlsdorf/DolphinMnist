@@ -9,10 +9,10 @@ public class Annotation {
 
     private long start;
     private long stop;
-    private Labels annotation;
+    private String annotation;
     private String file;
 
-    public Annotation(long start, long stop, Labels annotation, String file) {
+    public Annotation(long start, long stop, String annotation, String file) {
         this.start = start;
         this.stop = stop;
         this.annotation = annotation;
@@ -41,7 +41,7 @@ public class Annotation {
         while(line != null) {
             String cmp[] = line.trim().split(",");
             if(cmp.length == 5) {
-                Labels label = Labels.valueOf(cmp[1].trim());
+                String label = cmp[1].trim();
                 String path = cmp[2];
                 long start = Long.parseLong(cmp[3]);
                 long stop = Long.parseLong(cmp[4]);
@@ -52,10 +52,10 @@ public class Annotation {
         return annotations;
     }
 
-    public static HashMap<Labels, Integer> counts(ArrayList<Annotation> annotations) {
-        HashMap<Labels, Integer> counts = new HashMap<>();
+    public static HashMap<String, Integer> counts(ArrayList<Annotation> annotations) {
+        HashMap<String, Integer> counts = new HashMap<>();
         for(Annotation annotation : annotations) {
-            Labels l = annotation.getAnnotation();
+            String l = annotation.getAnnotation();
             if(!counts.containsKey(l)) {
                 counts.put(annotation.getAnnotation(), 1);
             } else {
@@ -96,7 +96,7 @@ public class Annotation {
         return start;
     }
 
-    public void setAnnotation(Labels annotation) {
+    public void setAnnotation(String annotation) {
         this.annotation = annotation;
     }
 
@@ -104,7 +104,7 @@ public class Annotation {
         return stop;
     }
 
-    public Labels getAnnotation() {
+    public String getAnnotation() {
         return annotation;
     }
 

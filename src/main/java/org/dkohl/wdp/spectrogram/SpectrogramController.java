@@ -23,6 +23,7 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener,
     private InfoComponent info;
     private AudioComponent audioView;
     private Spectrogram spectrogram;
+    private KeyMap keymap;
     private int position;
     private int width;
     private int speed;
@@ -30,7 +31,7 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener,
     private boolean inMeasurementMode;
     private Measurment currentMeasurment;
 
-    public SpectrogramController(AudioReader stream, Spectrogram s, SpectrogramParams params, SpectrogramComponent spectrogramView, AudioComponent audioView, InfoComponent info, int width, int speed, ArrayList<Annotation> annotations) {
+    public SpectrogramController(AudioReader stream, Spectrogram s, SpectrogramParams params, SpectrogramComponent spectrogramView, AudioComponent audioView, InfoComponent info, int width, int speed, ArrayList<Annotation> annotations, KeyMap keymap) {
         this.stream = stream;
         this.params = params;
         this.spectrogramView = spectrogramView;
@@ -41,9 +42,10 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener,
         this.annotations = annotations;
         this.speed = speed;
         this.info = info;
+        this.keymap = keymap;
     }
 
-    private void addAnnotation(Labels label) {
+    private void addAnnotation(String label) {
         Annotation match = Annotation.findAnnotation(annotations, params, stream, position, position + width);
         if(label == null && match != null) {
             annotations.remove(match);
@@ -148,17 +150,12 @@ public class SpectrogramController implements KeyEventDispatcher, MouseListener,
     }
 
     private void handle(KeyEvent e) throws Exception {
+        char c = e.getKeyChar();
+        int ci = (int) c;
+        if (ci - 48 < 10 && keymap.hasKey(c)) {
+            addAnnotation(keymap.getLabel(e.getKeyChar()));
+        }
         switch (e.getKeyChar()) {
-            case '1': addAnnotation(Labels.BP_FAST); break;
-            case '2': addAnnotation(Labels.BP_MED); break;
-            case '3': addAnnotation(Labels.EC_FAST); break;
-            case '4': addAnnotation(Labels.EC_MED); break;
-            case '5': addAnnotation(Labels.EC_SLOW); break;
-            case '6': addAnnotation(Labels.WSTL_UP); break;
-            case '7': addAnnotation(Labels.WSTL_DOWN); break;
-            case '8': addAnnotation(Labels.WSTL_CONV); break;
-            case '9': addAnnotation(Labels.WSTL_CONC); break;
-            case '0': addAnnotation(Labels.NOISE); break;
             case 'd': right(); break;
             case 'a': left(); break;
             case 's': save(); break;
