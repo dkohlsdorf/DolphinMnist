@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.fasterxml.jackson.core:jackson-dataformat-yaml:{$version}">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-dataformat-yaml/{$version}/jackson-dataformat-yaml-{$version}.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-dataformat-yaml/{$version}/jackson-dataformat-yaml-{$version}-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-dataformat-yaml/{$version}/jackson-dataformat-yaml-{$version}-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
